@@ -180,7 +180,7 @@ Path: /mqtt
 Create a new subscription
 =========================
 
-Requires a topic name, could be any. No pre- or post-steps needed
+Requires a topic name, could be any. No pre- or post-steps needed.
 
 Example: testtopic_01/#
 
@@ -194,7 +194,62 @@ Send messages
 
 As the selected topic in the UI is the same in wich the message have been sent, the message appears in the screen
 
+Examples
+--------
+
+* Connect to the broker with your created connection: user_00 / 123456
+* Subscribe to a topic: testtopic/123456/#
+* Using the same connection, subscribe to a topic: testtopic/456789/#
+* No pre- or post-steps needed to topic subscription.
+* Send messages to topic testtopic/123456/#
+* Send messages to topic testtopic/456789/#
+* Messages remain separated despite being sent from the same connection.
+* Subscribe to a topic: testtopic/#
+* Notice 'testtopic' is a prefix of the previous subscripted topics
+* Despite having subscripted after the messages were being send, the subscription shows the messages that were sent to both topics: testtopic/123456 and testtopic/456789
+* Each message shows the topic to which were sent.
 
 
+Notice docker volumes were created
+==================================
 
+Due to volume declarations in the docker-compose.yml, docker volumes were created
+
+test-user@MSIGL65:~/docs/development/mqtt/mosquito$ docker volume ls
+DRIVER    VOLUME NAME
+local     36fe45a1a840c80c1f402ff3218830b71ea31ecdcb86f6125f8899c73ba300ae
+local     dfee15595d5a3c661ee618fa45518d3d9e24a0ebaccbcbdcee40d1ece081babf
+local     ed090b73d1d87f5ec8c2cc67975351b0f6db2ec82bf4a9ac09df0130566c25ac
+local     mosquito_config
+local     mosquito_data
+local     mosquito_log
+test-user@MSIGL65:~/docs/development/mqtt/mosquito$
+
+Note on before commit to repository
+===================================
+
+As files inside the config folder are not property of the operating system user, perform a change ownership operation before commit
+
+test-user@MSIGL65:~/docs/development/mqtt/mosquito$ ls -lat
+total 32
+drwxrwxr-x 8 test-user test-user 4096 abr  7 08:13 .git
+-rw-rw-r-- 1 test-user test-user 8381 abr  7 08:12 readme.md
+drwxrwxr-x 2      1883      1883 4096 abr  7 08:09 config
+-rw-rw-r-- 1 test-user test-user  403 abr  7 06:38 docker-compose.yml
+drwxrwxr-x 4 test-user test-user 4096 abr  6 19:38 .
+drwxrwxr-x 3 test-user test-user 4096 abr  6 14:00 ..
+test-user@MSIGL65:~/docs/development/mqtt/mosquito$ ls -lat config/
+total 20
+drwxrwxr-x 2      1883      1883 4096 abr  7 08:09 .
+-rw------- 1      1883      1883   47 abr  7 08:09 mosquitto.db
+drwxrwxr-x 4 test-user test-user 4096 abr  6 19:38 ..
+-rw-rw-r-- 1      1883      1883  194 abr  6 16:53 mosquitto.conf
+-rw------- 1      1883      1883  121 abr  6 16:50 pwfile
+test-user@MSIGL65:~/docs/development/mqtt/mosquito$ 
+
+
+Change ownership
+----------------
+
+sudo chown -R test-user config/
 

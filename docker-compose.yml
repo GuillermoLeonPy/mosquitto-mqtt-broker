@@ -12,6 +12,11 @@ services:
     ports:
       - 1883:1883
       - 9001:9001
+  mqttclient:
+    container_name: mqttx-web
+    image: emqx/mqttx-web
+    ports:
+      - 1080:80
 volumes:
   config:
   data:
